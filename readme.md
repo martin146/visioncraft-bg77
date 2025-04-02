@@ -4,7 +4,7 @@ The developed application allows for the management of Quectel BG77 via a simple
 ## Prerequisites
 
 ### Kernel Modules
-Although Quectel BG77 utilizes a conventional Linux USB driver, its ID is not a part of the conventional Linux kernel. Thus, it requires modification of **option** and **usb_wwan** kernel module followed by new kernel compilation. The kernel modification required for proper functionality of the Quectel BG77 module is described [here](readme.md).
+Although Quectel BG77 utilizes a conventional Linux USB driver, its ID is not a part of the conventional Linux kernel. Thus, it requires modification of **option** and **usb_wwan** kernel module followed by new kernel compilation. The kernel modification required for proper functionality of the Quectel BG77 module is described [here](kernel.md).
 
 ### Python Environment
 

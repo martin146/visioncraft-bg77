@@ -1,0 +1,15 @@
+Port: COM12
+BaudRate: 115200
+APN: lpwa.vodafone.iot
+Band:
+  - B20
+  - B8
+  - B3
+Tech: LTEM
+PLMN: AUTO
+RegTimeout: 300
+CmdTimeout: 30
+
+Logging:
+  file: ./Logs/logs.log
+  level: info

@@ -16,6 +16,7 @@ When the USB serial option driver has been installed in the module, the device f
 
 Finally, after successful registration in the network, a new eth (usually eth1) interface is created via the Ethernet Control Mode (ECM) of a modem USB interface. When this interface is assigned an IP address, it indicates successful network registration. However, such an indication is somehow clumsy, and the developed application provides a more convenient way of checking the network status.
 
+Test
 
 
 

@@ -64,7 +64,7 @@ def run_app(app_args: Namespace) -> None:
 if __name__ == '__main__':
     parser = ArgumentParser(prog='app')
     parser.add_argument('-m', '--mode', choices=['att', 'cmd', 'link', 'stat'], required=True, help='Select mode')
-    parser.add_argument('-c', '--command', help='Command required in "cmd" mode')
+    parser.add_argument('-c', '--command', help='AT command required in "cmd" mode')
     parser.add_argument('-t', '--timeout', help='Command timeout in seconds')
 
     args = parser.parse_args()

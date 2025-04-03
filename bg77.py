@@ -89,7 +89,7 @@ class BG77:
             rsrp = rec_list[idx + 3]
             sinr = int(rec_list[idx + 4]) / 5 - 20
             rsrq = int(rec_list[idx + 5])
-            print(f'Tech: {tech}, RSSI: {rssi} dBm, RSRP: {rsrp} dBm, SINR: {sinr:.2f} dB, RSRQ: {rsrq}')
+            print(f'Tech: {tech}, RSSI: {rssi} dBm, RSRP: {rsrp} dBm, SINR: {sinr:.2f} dB, RSRQ: {rsrq} dB')
 
     def reg_to_network(self) -> None:
         bands = get_bands(services.config.config[BAND])

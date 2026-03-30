@@ -1,9 +1,11 @@
 import sys
 import time
 
+from gpiozero import LED
 import services
 import serial
 import re
+import errno
 from consts import *
 
 def get_bands(bands: list) -> int:
@@ -24,7 +26,10 @@ def get_mode(mode: str) -> int:
 
 
 class BG77:
-    def __init__(self):
+    def __init__(self) -> None:
+        self.ser = None
+
+    def init_port(self, recurse = True) -> None:
         try:
             self.ser = serial.Serial(port=services.config.config[PORT],
                                      baudrate=services.config.config[SPEED],
@@ -32,10 +37,17 @@ class BG77:
                                      rtscts=True,
                                      timeout=0.2)
         except serial.SerialException as e:
-            services.logger.error(f'Serial Exception: {e}')
-            sys.exit(-1)
+            if e.errno == errno.ENOENT and recurse == True:
+                services.logger.error(f'Port {services.config.config[PORT]} is not available. Retrying')
+                self.on_module()
+                self.init_port(False)
+            else:
+                services.logger.error(f'Serial Exception: {e}')
+                sys.exit(-1)
 
     def send_command(self, command: str) -> str:
+        if self.ser is None:
+            self.init_port()
         command = command + '\r\n'
         self.ser.write(command.encode())
         rec = self.ser.read(512)
@@ -44,6 +56,8 @@ class BG77:
         return rec
 
     def send_command_timeout(self, command: str, timeout: float) -> str:
+        if self.ser is None:
+            self.init_port()
         ticks = int(timeout / self.ser.timeout)
         i = 0
         command = command + '\r\n'
@@ -71,6 +85,22 @@ class BG77:
             time.sleep(0.5)
         return False
 
+    def on_module(self):
+        print('Turning On Module')
+        pwr_pin = LED(services.config.config[PWR_KEY])
+        pwr_pin.on()
+        time.sleep(0.575)
+        pwr_pin.off()
+        time.sleep(3.5)
+
+    def off_module(self):
+        print('Turning Off Module')
+        pwr_pin = LED(services.config.config[PWR_KEY])
+        pwr_pin.on()
+        time.sleep(1.25)
+        pwr_pin.off()
+        time.sleep(2.5)
+
     def get_reg_status(self) -> None:
         rec = self.send_command('AT+CGATT?')
         if '+CGATT: 1' in rec:
@@ -91,10 +121,25 @@ class BG77:
             rsrq = int(rec_list[idx + 5])
             print(f'Tech: {tech}, RSSI: {rssi} dBm, RSRP: {rsrp} dBm, SINR: {sinr:.2f} dB, RSRQ: {rsrq} dB')
 
+    def set_antenna(self) -> None:
+        pin_a = 1
+        pin_b = 0
+        if services.config.config[ANTENNA] == 'EXT':
+            pin_a = 0
+            pin_b = 1
+
+        print(f'Setting Antenna to {services.config.config[ANTENNA]}')
+
+        self.send_command(f'AT+QCFG="gpio",3,57,{pin_a},1')
+        self.send_command('AT+QCFG="gpio",2,57')
+        self.send_command(f'AT+QCFG="gpio",3,33,{pin_b},1')
+        self.send_command('AT+QCFG="gpio",2,33')
+
     def reg_to_network(self) -> None:
         bands = get_bands(services.config.config[BAND])
         mode = get_mode(services.config.config[TECH])
         plmn = services.config.config[PLMN]
+        self.set_antenna()
         self.send_command_timeout('AT+CFUN=0', 2)
         self.send_command(f'AT+QCFG="iotopmode",{mode},1')
         self.send_command(f'AT+QCFG="band",0,{hex(bands)},{hex(bands)},1')

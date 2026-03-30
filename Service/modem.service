@@ -1,0 +1,14 @@
+[Unit]
+Description=BG77 Module Service
+After=network.target
+
+[Service]
+User=csm
+Type=simple
+WorkingDirectory=/home/csm/Modem
+ExecStart=/home/csm/Modem/modem-env/bin/python3 /home/csm/Modem/app.py -m att
+Environment=PYTHONUNBUFFERED=1
+Restart=never
+
+[Install]
+WantedBy=multi-user.target

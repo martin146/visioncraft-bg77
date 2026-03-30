@@ -10,6 +10,8 @@ APN = 'APN'
 PLMN = 'PLMN'
 REG_TOUT = 'RegTimeout'
 CMD_TOUT = 'CmdTimeout'
+PWR_KEY = 'PWRKey'
+ANTENNA = 'Antenna'
 
 BANDS = {'B1': 0x1,
          'B2': 0x2,

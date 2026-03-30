@@ -1,4 +1,4 @@
-Port: COM12
+Port: /dev/ttyUSB2
 BaudRate: 115200
 APN: lpwa.vodafone.iot
 Band:
@@ -6,9 +6,11 @@ Band:
   - B8
   - B3
 Tech: LTEM
-PLMN: AUTO
+PLMN: 23003
 RegTimeout: 300
 CmdTimeout: 30
+PWRKey: 24
+Antenna: INT
 
 Logging:
   file: ./Logs/logs.log

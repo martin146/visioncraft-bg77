@@ -25,7 +25,9 @@ class ConfigService:
             'Tech': lambda s: s in MODES.keys(),
             'RegTimeout': And(int, lambda n: n > 0),
             'CmdTimeout': And(int, lambda n: n > 0),
+            'PWRKey': And(int, lambda x: x >= 0),
             'PLMN': Or(int, 'AUTO'),
+            'Antenna': lambda s: s in ('INT', 'EXT'),
             'Logging': {
                 'file': And(str, len),
                 'level': lambda s: s in ('debug', 'info', 'warning', 'error', 'critical'),

@@ -17,9 +17,7 @@ def handler(sig, frame):
     print('Exiting...')
     sys.exit(0)
 
-
 signal.signal(signal.SIGINT, handler)
-
 
 def initialize_app() -> None:
     services.logger = logging.getLogger('VCraft-BG77')
@@ -59,11 +57,16 @@ def run_app(app_args: Namespace) -> None:
         services.module.get_reg_status()
     elif app_args.mode == 'stat':
         services.module.get_signal_stats()
-
+    elif app_args.mode == 'on':
+        services.module.on_module()
+    elif app_args.mode == 'off':
+        services.module.off_module()
+    elif app_args.mode == 'ant':
+        services.module.set_antenna()
 
 if __name__ == '__main__':
     parser = ArgumentParser(prog='app')
-    parser.add_argument('-m', '--mode', choices=['att', 'cmd', 'link', 'stat'], required=True, help='Select mode')
+    parser.add_argument('-m', '--mode', choices=['on', 'off', 'ant', 'att', 'cmd', 'link', 'stat'], required=True, help='Select mode')
     parser.add_argument('-c', '--command', help='AT command required in "cmd" mode')
     parser.add_argument('-t', '--timeout', help='Command timeout in seconds')
 

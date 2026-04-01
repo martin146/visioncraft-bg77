@@ -1,7 +1,6 @@
 import sys
 import time
 
-from gpiozero import LED
 import services
 import serial
 import re
@@ -87,19 +86,9 @@ class BG77:
 
     def on_module(self):
         print('Turning On Module')
-        pwr_pin = LED(services.config.config[PWR_KEY])
-        pwr_pin.on()
-        time.sleep(0.575)
-        pwr_pin.off()
-        time.sleep(3.5)
 
     def off_module(self):
         print('Turning Off Module')
-        pwr_pin = LED(services.config.config[PWR_KEY])
-        pwr_pin.on()
-        time.sleep(1.25)
-        pwr_pin.off()
-        time.sleep(2.5)
 
     def get_reg_status(self) -> None:
         rec = self.send_command('AT+CGATT?')

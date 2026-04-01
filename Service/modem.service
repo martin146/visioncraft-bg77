@@ -3,10 +3,10 @@ Description=BG77 Module Service
 After=network.target
 
 [Service]
-User=csm
+User=visioncraft
 Type=simple
-WorkingDirectory=/home/csm/Modem
-ExecStart=/home/csm/Modem/modem-env/bin/python3 /home/csm/Modem/app.py -m att
+WorkingDirectory=/home/visioncraft/Modem
+ExecStart=/home/visioncraft/Modem/.venv/bin/python3 /home/visioncraft/Modem/app.py -m att
 Environment=PYTHONUNBUFFERED=1
 Restart=never
 
